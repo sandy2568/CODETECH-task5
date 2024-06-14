@@ -1,0 +1,74 @@
+class User:
+    def __init__(self, username):
+        self.username = username
+        self.posts = []
+        self.following = set()
+
+    def post(self, message):
+        self.posts.append(message)
+
+    def follow(self, other_user):
+        self.following.add(other_user)
+
+    def display_posts(self):
+        print(f"Posts from {self.username}:")
+        for post in self.posts:
+            print(post)
+
+class SocialMediaPlatform:
+    def __init__(self):
+        self.users = {}
+
+    def create_user(self, username):
+        if username not in self.users:
+            self.users[username] = User(username)
+            print(f"User {username} created successfully.")
+        else:
+            print("Username already exists.")
+
+    def post_message(self, username, message):
+        if username in self.users:
+            self.users[username].post(message)
+            print("Message posted successfully.")
+        else:
+            print("User not found.")
+
+    def follow_user(self, follower, followed):
+        if follower in self.users and followed in self.users:
+            self.users[follower].follow(followed)
+            print(f"{follower} is now following {followed}.")
+        else:
+            print("User not found.")
+
+    def display_timeline(self, username):
+        if username in self.users:
+            user = self.users[username]
+            print(f"Timeline for {username}:")
+            for followed_user in user.following:
+                followed_user.display_posts()
+        else:
+            print("User not found.")
+
+# Example usage
+if __name__ == "__main__":
+    social_media = SocialMediaPlatform()
+
+    # Creating users
+    social_media.create_user("Alice")
+    social_media.create_user("Bob")
+    social_media.create_user("Charlie")
+
+    # Posting messages
+    social_media.post_message("Alice", "Hello everyone!")
+    social_media.post_message("Bob", "Nice weather today.")
+
+    # Following users
+    social_media.follow_user("Alice", "Bob")
+    social_media.follow_user("Alice", "Charlie")
+
+    # Posting more messages
+    social_media.post_message("Bob", "I love programming!")
+    social_media.post_message("Charlie", "Having fun with Python.")
+
+    # Displaying Alice's timeline
+    social_media.display_timeline("Alice")
